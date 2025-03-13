@@ -1,0 +1,6 @@
+[submodule "third-party/wcdb"]
+	path = third-party/wcdb
+	url = https://github.com/Tencent/wcdb.git
+[submodule "third-party/cpp-httplib"]
+	path = third-party/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib.git
