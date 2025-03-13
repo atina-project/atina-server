@@ -1,0 +1,9 @@
+[submodule "third-party/cpp-httplib"]
+	path = third-party/cpp-httplib
+	url = https://github.com/atina-project/cpp-httplib.git
+[submodule "third-party/jsoncpp"]
+	path = third-party/jsoncpp
+	url = https://github.com/atina-project/jsoncpp.git
+[submodule "third-party/wcdb"]
+	path = third-party/wcdb
+	url = https://github.com/atina-project/wcdb.git
