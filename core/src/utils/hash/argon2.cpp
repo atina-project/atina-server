@@ -16,7 +16,7 @@ std::string argon2::hash(const std::string& __c_s_pswd, const std::string& __c_s
         __c_s_pswd.c_str(), __c_s_pswd.size(),
         __c_s_salt.c_str(), __c_s_salt.size(),
         hash.data(), __i_hash_len, nullptr, 0,
-        Argon2_i, ARGON2_VERSION_NUMBER
+        Argon2_id, ARGON2_VERSION_NUMBER
     );
     if (res != ARGON2_OK)
     {

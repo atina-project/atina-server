@@ -10,7 +10,7 @@ namespace atina::server::core::utils::hash {
         public:
             static std::string hash(const std::string& __c_s_pswd, const std::string& __c_s_salt,
                 int __i_iterations = 3,
-                int __i_mem_usage = 1 << 12,
+                int __i_mem_usage = 1 << 16,
                 int __i_threads = 1,
                 int __i_hash_len = 32
             );
