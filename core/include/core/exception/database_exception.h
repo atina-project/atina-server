@@ -12,6 +12,7 @@ namespace atina::server::core::exception {
         DB_CREATION_FAILED = 2,
         DB_TABLE_NOT_EXISTS = 3,
         DB_GET_VALUE_FAILED = 4,
+        DB_ILLEGAL_TABLE_DATA = 5,
     } database_errcode;
 
 } // namespace atina::server::core::exception

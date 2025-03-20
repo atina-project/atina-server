@@ -1,0 +1,36 @@
+project(atina-server-core)
+
+set(ATINA_SERVER_CORE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(_CORE_SRC_LIST
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/database/tables/base_header.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/database/tables/users.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/database/base.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/encrypt/rsa.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/argon2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/time.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/uuid.cpp
+)
+
+add_library(${PROJECT_NAME}
+    ${_CORE_SRC_LIST}
+)
+target_compile_definitions(${PROJECT_NAME}
+    PUBLIC
+        ATINA_SERVER_DATABASE_BASE_VERSION=1
+)
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        ${ATINA_SERVER_CORE_INCLUDE_DIR}
+    PRIVATE
+        ${JSONCPP_INCLUDE_DIR}
+        ${OPENSSL_INCLUDE_DIR}
+        ${WCDB_INCLUDE_DIR}
+)
+target_link_libraries(${PROJECT_NAME}
+    argon2
+    jsoncpp_lib
+    OpenSSL::Crypto
+    OpenSSL::SSL
+    uuid
+    WCDB
+)

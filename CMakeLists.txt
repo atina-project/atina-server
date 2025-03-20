@@ -6,6 +6,16 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(ATINA_SERVER_INSTALL_DIR "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
+set(ATINA_OPENSSL_MIN_VER "3.0.0")
 set(BUILD_SHARED_LIBS TRUE)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(OpenSSL ${ATINA_OPENSSL_MIN_VER} COMPONENTS Crypto SSL REQUIRED)
 
 add_subdirectory(third-party)
+add_subdirectory(core)
+
+if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/test)
+    add_subdirectory(test)
+endif()
