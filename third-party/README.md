@@ -6,6 +6,12 @@ Base commit: [2eaa2ea](https://github.com/yhirose/cpp-httplib/commit/2eaa2ea64f9
 
 License: MIT license
 
+### [Hypodermic](https://github.com/ybainier/Hypodermic) 2.5.3
+
+Base commit: [ba5516d](https://github.com/ybainier/Hypodermic/commit/ba5516d4e78230c1187debb01ebdf01e5d11f62d)
+
+License: MIT license
+
 ### [jsoncpp](https://github.com/open-source-parsers/jsoncpp) 1.9.7
 
 Base commit: [037752d](https://github.com/open-source-parsers/jsoncpp/commit/037752d9a1e48c8b7e5a62ee895a352166df03e3)

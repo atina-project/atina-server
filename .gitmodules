@@ -7,3 +7,6 @@
 [submodule "third-party/wcdb"]
 	path = third-party/wcdb
 	url = https://github.com/atina-project/wcdb.git
+[submodule "third-party/Hypodermic"]
+	path = third-party/Hypodermic
+	url = https://github.com/atina-project/Hypodermic.git
