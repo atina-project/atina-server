@@ -9,6 +9,8 @@ set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/argon2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/uuid.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/module_container.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/modules.cpp
 )
 
 add_library(${PROJECT_NAME}
@@ -22,6 +24,7 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${ATINA_SERVER_CORE_INCLUDE_DIR}
     PRIVATE
+        ${HYPODERMIC_INCLUDE_DIR}
         ${JSONCPP_INCLUDE_DIR}
         ${OPENSSL_INCLUDE_DIR}
         ${WCDB_INCLUDE_DIR}
