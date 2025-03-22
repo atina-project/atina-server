@@ -4,6 +4,7 @@
 namespace atina::server::core {
 
     typedef enum user_type {
+        unknown,
         admin,
         normal,
         blocked

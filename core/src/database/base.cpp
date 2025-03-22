@@ -1,5 +1,7 @@
 #include"core/database/base.h"
 
+#include<cassert>
+
 #include"core/database/tables/base_header.h"
 #include"core/database/tables/users.h"
 #include"core/enum.h"
@@ -51,6 +53,8 @@ database::base::base(const std::filesystem::path& __c_fp_db_path)
                 "failed to create new base db"
             );
         } // error occurs
+
+        this->_s_server_uuid = header.s_server_uuid;
     } // create new database
     else
     {
@@ -120,9 +124,16 @@ database::base::base(const std::filesystem::path& __c_fp_db_path)
     return;
 }
 
+database::base::~base(){
+    this->close_database();
+    return;
+}
+
 bool database::base::add_new_user(const std::string& __c_s_username, const std::string& __c_s_pswd, const std::string& __c_s_email,
                                   const std::string& __c_s_name, const std::string& __c_s_tag)
 {
+    assert(this->_p__db);
+
     auto header = this->_p__db->getTable<tables::base_header>("header");
     int uid = header.selectValue(
         WCDB_FIELD(tables::base_header::i_next_uid),
@@ -166,7 +177,39 @@ bool database::base::add_new_user(const std::string& __c_s_username, const std::
     return true;
 }
 
+bool database::base::check_is_user_admin(const std::string& __c_s_username){
+    assert(this->_p__db);
+
+    if (!this->has_username(__c_s_username))
+    {
+        return false;
+    }
+    auto users = this->_p__db->getTable<tables::users>("users");
+    auto user_type = users.getFirstObjectWithFields(
+        WCDB_FIELD(tables::users::i_usertype),
+        WCDB_FIELD(tables::users::s_username) == __c_s_username
+    )->i_usertype;
+    return user_type == user_type::admin;
+}
+
+bool database::base::check_is_user_blocked(const std::string& __c_s_username){
+    assert(this->_p__db);
+
+    if (!this->has_username(__c_s_username))
+    {
+        return false;
+    } // username doesn't exist
+    auto users = this->_p__db->getTable<tables::users>("users");
+    auto user_type = users.getFirstObjectWithFields(
+        WCDB_FIELD(tables::users::i_usertype),
+        WCDB_FIELD(tables::users::s_username) == __c_s_username
+    )->i_usertype;
+    return user_type == user_type::blocked;
+}
+
 bool database::base::check_login_data(const std::string& __c_s_username, const std::string& __c_s_pswd){
+    assert(this->_p__db);
+    
     if (!this->has_username(__c_s_username))
     {
         return false;
@@ -179,11 +222,22 @@ bool database::base::check_login_data(const std::string& __c_s_username, const s
     return __c_s_pswd == user_pswd;
 }
 
+void database::base::close_database(){
+    if (this->_p__db)
+    {
+        this->_p__db->close();
+        this->_p__db.reset();
+    }
+    return;
+}
+
 std::string database::base::get_server_uuid() const noexcept {
     return this->_s_server_uuid;
 }
 
 database::base::user_data database::base::get_user_data(int __i_uid){
+    assert(this->_p__db);
+
     if (!this->has_uid(__i_uid))
     {
         return user_data::empty();
@@ -200,6 +254,8 @@ database::base::user_data database::base::get_user_data(int __i_uid){
 }
 
 database::base::user_data database::base::get_user_data(const std::string& __c_s_username){
+    assert(this->_p__db);
+    
     if (!this->has_username(__c_s_username))
     {
         return user_data::empty();
@@ -216,6 +272,8 @@ database::base::user_data database::base::get_user_data(const std::string& __c_s
 }
 
 bool database::base::has_uid(int __i_uid){
+    assert(this->_p__db);
+    
     bool has_user = this->_p__db->getValueFromStatement(
         WCDB::StatementSelect().select(1)
                                .from("users")
@@ -226,6 +284,8 @@ bool database::base::has_uid(int __i_uid){
 }
 
 bool database::base::has_username(const std::string& __c_s_username){
+    assert(this->_p__db);
+    
     bool has_user = this->_p__db->getValueFromStatement(
         WCDB::StatementSelect().select(1)
                                .from("users")

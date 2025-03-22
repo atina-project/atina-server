@@ -43,7 +43,7 @@ namespace atina::server::core::database {
 
         public:
             base(const std::filesystem::path& __c_fp_db_path);
-            ~base(){};
+            ~base();
 
             /**
              * Add a new user to database. UID will be given automatically.
@@ -54,13 +54,36 @@ namespace atina::server::core::database {
                 const std::string& __c_s_username, const std::string& __c_s_pswd, const std::string& __c_s_email = "",
                 const std::string& __c_s_name = "", const std::string& __c_s_tag = ""
             );
+
+            /**
+             * Check if a user is admin.
+             *
+             * ATTENTION: If username doesn't exist, return false.
+            */
+            bool check_is_user_admin(const std::string& __c_s_username);
+
+            /**
+             * Check if a user is blocked.
+             *
+             * ATTENTION: If username doesn't exist, return false.
+            */
+            bool check_is_user_blocked(const std::string& __c_s_username);
+
             /**
              * Compare client provided login data with database.
              * This function should always be called first before `get_user_data()`.
              *
              * ATTENTION: pswd should be pre-hashed.
+             * ATTENTION: This function only checks login data. If the user is blocked & not allowed to login, call `check_is_user_blocked()`.
             */
             bool check_login_data(const std::string& __c_s_username, const std::string& __c_s_pswd);
+            
+            /**
+             * Close & release database manually.
+             *
+             * WARNING: Always call this function before exiting program!!! Destructing database automatically by `module_container` causes segmentation fault!!!
+            */
+            void close_database();
             std::string get_server_uuid() const noexcept;
             user_data get_user_data(int __i_uid);
             user_data get_user_data(const std::string& __c_s_username);
