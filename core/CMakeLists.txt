@@ -24,6 +24,7 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${ATINA_SERVER_CORE_INCLUDE_DIR}
     PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${HYPODERMIC_INCLUDE_DIR}
         ${JSONCPP_INCLUDE_DIR}
         ${OPENSSL_INCLUDE_DIR}

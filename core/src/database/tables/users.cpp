@@ -1,6 +1,6 @@
-#include"core/database/tables/users.h"
+#include"builtin/database/tables/users.h"
 
-using namespace atina::server::core::database::tables;
+using namespace atina::server::core::builtin::database::tables;
 
 WCDB_CPP_ORM_IMPLEMENTATION_BEGIN(users)
 

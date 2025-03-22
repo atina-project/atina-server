@@ -1,5 +1,5 @@
-#ifndef __ATINA_SERVER_CORE_DATABASE_BASE_H__
-#define __ATINA_SERVER_CORE_DATABASE_BASE_H__
+#ifndef __ATINA_SERVER_CORE_BUILTIN_DATABASE_BASE_H__
+#define __ATINA_SERVER_CORE_BUILTIN_DATABASE_BASE_H__
 
 #include<cstdint>
 #include<filesystem>
@@ -8,7 +8,7 @@
 #include"core/enum.h"
 #include"WCDB/WCDBCpp.h"
 
-namespace atina::server::core::database {
+namespace atina::server::core::builtin::database {
 
     class base {
 
@@ -98,6 +98,6 @@ namespace atina::server::core::database {
 
     }; // class base
 
-} // namespace atina::server::core::database
+} // namespace atina::server::core::builtin::database
 
-#endif // __ATINA_SERVER_CORE_DATABASE_BASE_H__
+#endif // __ATINA_SERVER_CORE_BUILTIN_DATABASE_BASE_H__

@@ -1,16 +1,16 @@
-#include"core/database/base.h"
+#include"builtin/database/base.h"
 
 #include<cassert>
 
-#include"core/database/tables/base_header.h"
-#include"core/database/tables/users.h"
+#include"builtin/database/tables/base_header.h"
+#include"builtin/database/tables/users.h"
 #include"core/enum.h"
 #include"core/exception/database_exception.h"
 #include"core/utils/hash/argon2.h"
 #include"core/utils/time.h"
 #include"core/utils/uuid.h"
 
-using namespace atina::server::core;
+using namespace atina::server::core::builtin;
 namespace fs = std::filesystem;
 
 database::base::base(const std::filesystem::path& __c_fp_db_path)

@@ -1,12 +1,12 @@
-#ifndef __ATINA_SERVER_CORE_DATABASE_TABLES_BASE_HEADER_H__
-#define __ATINA_SERVER_CORE_DATABASE_TABLES_BASE_HEADER_H__
+#ifndef __ATINA_SERVER_CORE_BUILTIN_DATABASE_TABLES_BASE_HEADER_H__
+#define __ATINA_SERVER_CORE_BUILTIN_DATABASE_TABLES_BASE_HEADER_H__
 
 #include<cstdint>
 
 #include"WCDB/CPPORMMacro.h"
 #include"WCDB/WCDBCpp.h"
 
-namespace atina::server::core::database::tables {
+namespace atina::server::core::builtin::database::tables {
 
     class base_header {
 
@@ -22,6 +22,6 @@ namespace atina::server::core::database::tables {
 
     }; // class base_header
 
-} // namespace atina::server::core::database::tables
+} // namespace atina::server::core::builtin::database::tables
 
-#endif // __ATINA_SERVER_CORE_DATABASE_TABLES_BASE_HEADER_H__
+#endif // __ATINA_SERVER_CORE_BUILTIN_DATABASE_TABLES_BASE_HEADER_H__

@@ -1,5 +1,5 @@
-#ifndef __ATINA_SERVER_CORE_DATABASE_TABLES_USERS_H__
-#define __ATINA_SERVER_CORE_DATABASE_TABLES_USERS_H__
+#ifndef __ATINA_SERVER_CORE_BUILTIN_DATABASE_TABLES_USERS_H__
+#define __ATINA_SERVER_CORE_BUILTIN_DATABASE_TABLES_USERS_H__
 
 #include<cstdint>
 #include<string>
@@ -8,7 +8,7 @@
 #include"WCDB/CPPORMMacro.h"
 #include"WCDB/WCDBCpp.h"
 
-namespace atina::server::core::database::tables {
+namespace atina::server::core::builtin::database::tables {
 
     class users {
 
@@ -29,6 +29,6 @@ namespace atina::server::core::database::tables {
 
     }; // class users
 
-} // namespace atina::server::core::database::tables
+} // namespace atina::server::core::builtin::database::tables
 
-#endif // __ATINA_SERVER_CORE_DATABASE_TABLES_USERS_H__
+#endif // __ATINA_SERVER_CORE_BUILTIN_DATABASE_TABLES_USERS_H__
