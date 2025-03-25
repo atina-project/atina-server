@@ -3,8 +3,11 @@ project(atina-server-core)
 set(ATINA_SERVER_CORE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/database/tables/base_header.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/database/tables/token_header.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/database/tables/tokens.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/database/tables/users.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/database/base.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/database/token.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/encrypt/rsa.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/argon2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/time.cpp
@@ -19,6 +22,11 @@ add_library(${PROJECT_NAME}
 target_compile_definitions(${PROJECT_NAME}
     PUBLIC
         ATINA_SERVER_DATABASE_BASE_VERSION=1
+        ATINA_SERVER_DATABASE_TOKEN_VERSION=1
+)
+target_compile_options(${PROJECT_NAME}
+    PUBLIC
+        -Wno-pragmas
 )
 target_include_directories(${PROJECT_NAME}
     PUBLIC
