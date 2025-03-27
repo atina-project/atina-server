@@ -103,7 +103,6 @@ def main():
     if len(sys.argv) > 1:
         args = argparser.parse_args()
         service = auth_gmail_api(os.path.join(configs["data_dir"], configs["token_filename"]), os.path.join(configs["data_dir"], configs["secret_filename"]))
-        send_email(service, "sichenradomlyu@gmail.com", "Test HTML", "./test.html")
         if args.auth_only:
             return
         elif args.send:
