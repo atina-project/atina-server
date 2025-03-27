@@ -4,6 +4,7 @@
 #include<cstdint>
 #include<filesystem>
 #include<memory>
+#include<mutex>
 
 #include"core/enum.h"
 #include"WCDB/WCDBCpp.h"
@@ -93,6 +94,7 @@ namespace atina::server::core::builtin::database {
         private:
             std::filesystem::path _fp_db_path;
             std::unique_ptr<WCDB::Database> _p__db;
+            std::recursive_mutex _mtx;
 
             std::string _s_server_uuid;
 

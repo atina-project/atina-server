@@ -3,7 +3,6 @@
 #include<argon2.h>
 #include<cstdint>
 #include<iomanip>
-#include<iostream>
 #include<sstream>
 #include<vector>
 
@@ -20,7 +19,6 @@ std::string argon2::hash(const std::string& __c_s_pswd, const std::string& __c_s
     );
     if (res != ARGON2_OK)
     {
-        std::cout << argon2_error_message(res) << std::endl;
         return "";
     }
     std::ostringstream oss;

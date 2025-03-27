@@ -10,6 +10,7 @@ set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/database/token.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/encrypt/rsa.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/argon2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/sha256.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/uuid.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/module_container.cpp

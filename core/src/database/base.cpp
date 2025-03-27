@@ -133,6 +133,7 @@ bool database::base::add_new_user(const std::string& __c_s_username, const std::
                                   const std::string& __c_s_name, const std::string& __c_s_tag)
 {
     assert(this->_p__db);
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
 
     auto header = this->_p__db->getTable<tables::base_header>("header");
     int uid = header.selectValue(
@@ -179,6 +180,7 @@ bool database::base::add_new_user(const std::string& __c_s_username, const std::
 
 bool database::base::check_is_user_admin(const std::string& __c_s_username){
     assert(this->_p__db);
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
 
     if (!this->has_username(__c_s_username))
     {
@@ -194,6 +196,7 @@ bool database::base::check_is_user_admin(const std::string& __c_s_username){
 
 bool database::base::check_is_user_blocked(const std::string& __c_s_username){
     assert(this->_p__db);
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
 
     if (!this->has_username(__c_s_username))
     {
@@ -209,6 +212,7 @@ bool database::base::check_is_user_blocked(const std::string& __c_s_username){
 
 bool database::base::check_login_data(const std::string& __c_s_username, const std::string& __c_s_pswd){
     assert(this->_p__db);
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
     
     if (!this->has_username(__c_s_username))
     {
@@ -223,6 +227,8 @@ bool database::base::check_login_data(const std::string& __c_s_username, const s
 }
 
 void database::base::close_database(){
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
+
     if (this->_p__db)
     {
         this->_p__db->close();
@@ -237,6 +243,7 @@ std::string database::base::get_server_uuid() const noexcept {
 
 database::base::user_data database::base::get_user_data(int __i_uid){
     assert(this->_p__db);
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
 
     if (!this->has_uid(__i_uid))
     {
@@ -255,6 +262,7 @@ database::base::user_data database::base::get_user_data(int __i_uid){
 
 database::base::user_data database::base::get_user_data(const std::string& __c_s_username){
     assert(this->_p__db);
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
     
     if (!this->has_username(__c_s_username))
     {
@@ -273,6 +281,7 @@ database::base::user_data database::base::get_user_data(const std::string& __c_s
 
 bool database::base::has_uid(int __i_uid){
     assert(this->_p__db);
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
     
     bool has_user = this->_p__db->getValueFromStatement(
         WCDB::StatementSelect().select(1)
@@ -285,6 +294,7 @@ bool database::base::has_uid(int __i_uid){
 
 bool database::base::has_username(const std::string& __c_s_username){
     assert(this->_p__db);
+    std::lock_guard<std::recursive_mutex> lock(this->_mtx);
     
     bool has_user = this->_p__db->getValueFromStatement(
         WCDB::StatementSelect().select(1)
