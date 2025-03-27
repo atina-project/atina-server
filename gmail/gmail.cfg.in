@@ -1,0 +1,5 @@
+[gmail]
+data_dir=@DATA_DIR@
+token_filename=gmail_token.json
+secret_filename=
+sender_email_addr=
