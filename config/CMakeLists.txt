@@ -1,0 +1,1 @@
+project(atina-server-config)
