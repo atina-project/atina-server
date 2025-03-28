@@ -20,6 +20,6 @@ else()
 endif()
 configure_file(
     ${CMAKE_SOURCE_DIR}/build_config.h.in
-    ${CMAKE_SOURCE_DIR}/config/include/config/build_config.h
+    ${CMAKE_SOURCE_DIR}/core/include/core/build_config.h
     @ONLY
 )
