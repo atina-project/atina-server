@@ -7,17 +7,16 @@
 using namespace atina::server::core::builtin::email;
 namespace fs = std::filesystem;
 
-bool email_sender::send_verification_code(const std::string& __c_s_receiver, std::string __c_s_code, int __i_valid_timelen, email_builder::email_lang __lang){
+bool email_sender::send_verification_code(const std::string& __c_s_receiver, std::string __c_s_code, int __i_valid_timelen, lang __lang){
     fs::path email_path = this->_p__builder->build_verification_email(__c_s_code, __i_valid_timelen, __lang);
     if (email_path.empty())
     {
         return false;
     }
-    std::string subject;
-    switch (__lang)
+    std::string subject = resources::resource[to_string(__lang)]["core_builtin_email_verification_email_subject"];
+    if (subject.empty())
     {
-        case email_builder::email_lang::en:   subject = resources::resource["en"]["core_builtin_email_verification_email_subject"]; break;
-        case email_builder::email_lang::zhCN: subject = resources::resource["zhCN"]["core_builtin_email_verification_email_subject"]; break;
+        subject = resources::resource["en"]["core_builtin_email_verification_email_subject"];
     }
     return this->_send(__c_s_receiver, subject, email_path);
 }

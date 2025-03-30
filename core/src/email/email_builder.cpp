@@ -15,9 +15,9 @@ email_builder::email_builder(std::shared_ptr<database::base> __p__base_db){
     return;
 }
 
-fs::path email_builder::build_verification_email(const std::string& __c_s_code, int __i_valid_timelen, email_builder::email_lang __lang) const {
+fs::path email_builder::build_verification_email(const std::string& __c_s_code, int __i_valid_timelen, lang __lang) const {
     fs::path template_path = utils::folder::data();
-    template_path /= std::string("verification_code_").append(this->_convert_email_lang_to_string(__lang))
+    template_path /= std::string("verification_code_").append(to_string(__lang))
                                                       .append(".html");
     if (!fs::exists(template_path))
     {
@@ -43,7 +43,7 @@ fs::path email_builder::build_verification_email(const std::string& __c_s_code, 
     email.replace(email.find("@SERVER_UID@"), 12, this->_s_server_uuid);
     
     fs::path email_path = utils::folder::temp();
-    email_path /= std::string("verification_code_").append(this->_convert_email_lang_to_string(__lang))
+    email_path /= std::string("verification_code_").append(to_string(__lang))
                                                    .append("_")
                                                    .append(std::to_string(utils::time::now().to_ts()))
                                                    .append(".html");
@@ -65,19 +65,4 @@ fs::path email_builder::build_verification_email(const std::string& __c_s_code, 
     wfile.close();
     
     return email_path;
-}
-
-std::string email_builder::_convert_email_lang_to_string(email_builder::email_lang __lang) const noexcept {
-    if (__lang == email_lang::en)
-    {
-        return "en";
-    }
-    else if (__lang == email_lang::zhCN)
-    {
-        return "zhCN";
-    }
-    else
-    {
-        return "";
-    }
 }

@@ -6,6 +6,7 @@
 
 #include"builtin/email/email_builder.h"
 #include"core/config.h"
+#include"core/enum.h"
 
 namespace atina::server::core::builtin::email {
 
@@ -16,7 +17,7 @@ namespace atina::server::core::builtin::email {
                 : _p__builder(__p__builder), _p__config(__p__config){}
             ~email_sender(){}
 
-            bool send_verification_code(const std::string& __c_s_receiver, std::string __c_s_code, int __i_valid_timelen, email_builder::email_lang __lang);
+            bool send_verification_code(const std::string& __c_s_receiver, std::string __c_s_code, int __i_valid_timelen, lang __lang);
 
         private:
             std::shared_ptr<email_builder> _p__builder;
