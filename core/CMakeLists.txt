@@ -8,9 +8,12 @@ set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/database/tables/users.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/database/base.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/database/token.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/email/email_builder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/email/email_sender.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/encrypt/rsa.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/argon2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/sha256.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/folder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/uuid.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/config.cpp
@@ -34,6 +37,7 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${ATINA_SERVER_CORE_INCLUDE_DIR}
     PRIVATE
+        ${ATINA_SERVER_RESOURCES_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${HYPODERMIC_INCLUDE_DIR}
         ${JSONCPP_INCLUDE_DIR}
@@ -41,6 +45,7 @@ target_include_directories(${PROJECT_NAME}
         ${WCDB_INCLUDE_DIR}
 )
 target_link_libraries(${PROJECT_NAME}
+    atina-server-resources
     argon2
     jsoncpp_lib
     OpenSSL::Crypto
