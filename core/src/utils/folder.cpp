@@ -32,6 +32,15 @@ fs::path folder::log(){
     return log;
 }
 
+fs::path folder::script(){
+    fs::path script = BUILD_CONFIG_SCRIPT_DIR;
+    if (!fs::exists(script))
+    {
+        fs::create_directories(script);
+    }
+    return script;
+}
+
 fs::path folder::temp(){
     fs::path temp = fs::temp_directory_path();
     temp /= "atina";

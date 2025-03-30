@@ -11,6 +11,7 @@ namespace atina::server::core::utils {
             static std::filesystem::path config();
             static std::filesystem::path data();
             static std::filesystem::path log();
+            static std::filesystem::path script();
             static std::filesystem::path temp();
 
     }; // class folder

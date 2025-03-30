@@ -4,6 +4,7 @@
 
 #include"core/build_config.h"
 #include"core/exception/config_exception.h"
+#include"core/utils/folder.h"
 #include"json/json.h"
 
 using namespace atina::server::core;
@@ -22,6 +23,14 @@ config::config(){
             "config folder is not a directory"
         );
     }
+
+#if BUILD_CONFIG_USE_BUILTIN_GMAIL
+    this->_fp_send_email_script_path = utils::folder::script() / "send_email.sh";
+    if (!fs::exists(this->_fp_send_email_script_path))
+    {
+        this->_fp_send_email_script_path.clear();
+    } // using builtin gmail but default send email script doesn't exist
+#endif // BUILD_CONFIG_USE_BUILTIN_GMAIL
 
     config_path /= "server_config.json";
     if (!fs::exists(config_path))
