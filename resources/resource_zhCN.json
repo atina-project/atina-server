@@ -1,5 +1,6 @@
 {
     "resource": {
-        "core_builtin_email_verification_email_subject": "Atina 验证码"
+        "core_builtin_email_verification_email_subject": "Atina 验证码",
+        "core_builtin_email_welcome_email_subject": "欢迎来到 Atina！"
     }
 }

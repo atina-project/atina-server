@@ -36,6 +36,7 @@ config::config(){
     if (!fs::exists(config_path))
     {
         Json::Value root;
+        root["admin_email"] = this->_s_admin_email;
         root["send_email_script_path"] = this->_fp_send_email_script_path.string();
 
         std::ofstream config_file(config_path);
@@ -71,10 +72,15 @@ config::config(){
         } // parse failed, use default
         config_file.close();
 
+        this->_s_admin_email = root["admin_email"].asString();
         this->_fp_send_email_script_path = root["send_email_script_path"].asString();
     }
 
     return;
+}
+
+std::string config::admin_email() const noexcept {
+    return this->_s_admin_email;
 }
 
 fs::path config::hook_send_email_script_path() const noexcept {

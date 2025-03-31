@@ -17,13 +17,14 @@ namespace atina::server::core::builtin::email {
                 : _p__builder(__p__builder), _p__config(__p__config){}
             ~email_sender(){}
 
-            bool send_verification_code(const std::string& __c_s_receiver, std::string __c_s_code, int __i_valid_timelen, lang __lang);
+            bool send_verification_code(const std::string& __c_s_receiver, const std::string& __c_s_code, int __i_valid_timelen, lang __lang) const;
+            bool send_welcome(const std::string& __c_s_receiver, const std::string& __c_s_username, lang __lang) const;
 
         private:
             std::shared_ptr<email_builder> _p__builder;
             std::shared_ptr<config> _p__config;
 
-            bool _send(const std::string& __c_s_receiver, const std::string& __c_s_subject, const std::filesystem::path& __c_fp_email);
+            bool _send(const std::string& __c_s_receiver, const std::string& __c_s_subject, const std::filesystem::path& __c_fp_email) const;
 
     }; // class email_sender
 

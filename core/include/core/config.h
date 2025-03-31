@@ -11,9 +11,11 @@ namespace atina::server::core {
             config();
             ~config(){}
 
+            std::string admin_email() const noexcept;
             std::filesystem::path hook_send_email_script_path() const noexcept;
 
         private:
+            std::string _s_admin_email;
             std::filesystem::path _fp_send_email_script_path;
 
     }; // class config

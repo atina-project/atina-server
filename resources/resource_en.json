@@ -1,5 +1,6 @@
 {
     "resource": {
-        "core_builtin_email_verification_email_subject": "Atina Verification Code"
+        "core_builtin_email_verification_email_subject": "Atina Verification Code",
+        "core_builtin_email_welcome_email_subject": "Welcome to Atina!"
     }
 }
