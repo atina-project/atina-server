@@ -8,9 +8,6 @@
 
 #include"core/module_container.tpp"
 
-#define INSTANCE_MODULE_CONTAINER_RESOLVE(type)                                         \
-    template std::shared_ptr<type> atina::server::core::module_container::resolve()
-
 using namespace atina::server::core;
 
 void modules::register_modules(Hypodermic::ContainerBuilder* __p__builder) const {

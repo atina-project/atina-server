@@ -31,6 +31,7 @@ include(cmake/build_config.cmake)
 add_subdirectory(third-party)
 add_subdirectory(resources)
 add_subdirectory(core)
+add_subdirectory(server)
 
 if(${ATINA_SERVER_USE_BUILTIN_GMAIL})
     add_subdirectory(gmail)

@@ -3,6 +3,9 @@
 #include"core/exception/module_exception.h"
 #include"Hypodermic/Container.h"
 
+#define INSTANCE_MODULE_CONTAINER_RESOLVE(type)                                         \
+    template std::shared_ptr<type> atina::server::core::module_container::resolve()
+
 using namespace atina::server::core;
 
 template<class T>
