@@ -6,14 +6,15 @@
 #include"builtin/database/tables/token_header.h"
 #include"builtin/database/tables/tokens.h"
 #include"core/exception/database_exception.h"
+#include"core/utils/folder.h"
 #include"core/utils/time.h"
 #include"core/utils/uuid.h"
 
 using namespace atina::server::core::builtin;
 namespace fs = std::filesystem;
 
-database::token::token(const fs::path& __c_fp_db_path)
-    : _fp_db_path(__c_fp_db_path)
+database::token::token()
+    : _fp_db_path(utils::folder::data() / "token.db")
 {
     bool new_db = !fs::exists(this->_fp_db_path);
     this->_p__db = std::make_unique<WCDB::Database>(this->_fp_db_path.string());

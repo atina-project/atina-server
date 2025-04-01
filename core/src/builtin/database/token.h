@@ -16,7 +16,7 @@ namespace atina::server::core::builtin::database {
     class token {
 
         public:
-            token(const std::filesystem::path& __c_fp_db_path);
+            token();
             ~token();
 
             /**

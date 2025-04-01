@@ -6,6 +6,7 @@
 #include"builtin/database/tables/users.h"
 #include"core/enum.h"
 #include"core/exception/database_exception.h"
+#include"core/utils/folder.h"
 #include"core/utils/hash/argon2.h"
 #include"core/utils/time.h"
 #include"core/utils/uuid.h"
@@ -13,8 +14,8 @@
 using namespace atina::server::core::builtin;
 namespace fs = std::filesystem;
 
-database::base::base(const std::filesystem::path& __c_fp_db_path)
-    : _fp_db_path(__c_fp_db_path)
+database::base::base()
+    : _fp_db_path(utils::folder::data() / "base.db")
 {
     bool new_db = !fs::exists(this->_fp_db_path);
     this->_p__db = std::make_unique<WCDB::Database>(this->_fp_db_path.string());

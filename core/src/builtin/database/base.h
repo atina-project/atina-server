@@ -43,7 +43,7 @@ namespace atina::server::core::builtin::database {
             } user_data;
 
         public:
-            base(const std::filesystem::path& __c_fp_db_path);
+            base();
             ~base();
 
             /**
