@@ -10,3 +10,6 @@
 [submodule "third-party/Hypodermic"]
 	path = third-party/Hypodermic
 	url = https://github.com/atina-project/Hypodermic.git
+[submodule "third-party/g3log"]
+	path = third-party/g3log
+	url = https://github.com/atina-project/g3log.git

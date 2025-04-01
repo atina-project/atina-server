@@ -6,6 +6,12 @@ Base commit: [2eaa2ea](https://github.com/yhirose/cpp-httplib/commit/2eaa2ea64f9
 
 License: MIT license
 
+### [g3log](https://github.com/KjellKod/g3log) 2.4
+
+Base commit [cec84ba](https://github.com/KjellKod/g3log/commit/cec84ba5926e29eaf10b649e02a82639104eb66c)
+
+License: Unlicensed (Public domain)
+
 ### [Hypodermic](https://github.com/ybainier/Hypodermic) 2.5.3
 
 Base commit: [ba5516d](https://github.com/ybainier/Hypodermic/commit/ba5516d4e78230c1187debb01ebdf01e5d11f62d)
