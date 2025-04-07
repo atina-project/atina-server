@@ -18,6 +18,7 @@ set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/uuid.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/config.cpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/src/core.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/enum.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/module_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/modules.cpp
@@ -41,6 +42,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${ATINA_SERVER_RESOURCES_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${G3LOG_INCLUDE_DIR}
         ${HYPODERMIC_INCLUDE_DIR}
         ${JSONCPP_INCLUDE_DIR}
         ${OPENSSL_INCLUDE_DIR}
@@ -49,6 +51,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     atina-server-resources
     argon2
+    g3log
     jsoncpp_lib
     OpenSSL::Crypto
     OpenSSL::SSL

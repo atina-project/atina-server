@@ -1,10 +1,14 @@
 #include"core/config.h"
 
+#include<cerrno>
+#include<cstring>
 #include<fstream>
+#include<sstream>
 
 #include"core/build_config.h"
 #include"core/exception/config_exception.h"
 #include"core/utils/folder.h"
+#include"g3log/g3log.hpp"
 #include"json/json.h"
 
 using namespace atina::server::core;
@@ -35,6 +39,7 @@ config::config(){
     config_path /= "server_config.json";
     if (!fs::exists(config_path))
     {
+        LOG(INFO) << "Creating new config file... [path=\"" << config_path << "\"]";
         Json::Value root;
         root["admin_email"] = this->_s_admin_email;
         root["send_email_script_path"] = this->_fp_send_email_script_path.string();
@@ -42,6 +47,7 @@ config::config(){
         std::ofstream config_file(config_path);
         if (!config_file.is_open())
         {
+            LOG(WARNING) << "Failed to write to new config file. [path=\"" << config_path << "\",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
             throw exception::config_exception(
                 exception::config_errcode::CFG_CANNOT_OPEN,
                 "cannot open server_config.json to write"
@@ -54,9 +60,11 @@ config::config(){
     } // new config
     else
     {
+        LOG(INFO) << "Reading from config file... [path=\"" << config_path << "\"]";
         std::ifstream config_file(config_path);
         if (!config_file.is_open())
         {
+            LOG(WARNING) << "Failed to read from config file. [path=\"" << config_path << "\",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
             throw exception::config_exception(
                 exception::config_errcode::CFG_CANNOT_OPEN,
                 "cannot open server_config.json to read"
@@ -68,6 +76,9 @@ config::config(){
         std::string err;
         if (!Json::parseFromStream(reader, config_file, &root, &err))
         {
+            LOG(WARNING) << "Illegal config file format, use default. [errmsg=\"" << err << "\"]";
+            config_file.close();
+            LOG(INFO) << "Config parse done. [" << this->_dump_config_to_string() << "]";
             return;
         } // parse failed, use default
         config_file.close();
@@ -76,6 +87,7 @@ config::config(){
         this->_fp_send_email_script_path = root["send_email_script_path"].asString();
     }
 
+    LOG(INFO) << "Config parse done. [" << this->_dump_config_to_string() << "]";
     return;
 }
 
@@ -85,4 +97,11 @@ std::string config::admin_email() const noexcept {
 
 fs::path config::hook_send_email_script_path() const noexcept {
     return this->_fp_send_email_script_path;
+}
+
+std::string config::_dump_config_to_string() const {
+    std::ostringstream oss;
+    oss << "admin_email=\"" << this->_s_admin_email << "\","
+        << "send_email_script_path=\"" << this->_fp_send_email_script_path << "\"";
+    return oss.str();
 }

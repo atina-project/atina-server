@@ -1,11 +1,14 @@
 #include"builtin/email/email_builder.h"
 
+#include<cerrno>
+#include<cstring>
 #include<fstream>
 #include<sstream>
 
 #include"builtin/database/base.h"
 #include"core/utils/folder.h"
 #include"core/utils/time.h"
+#include"g3log/g3log.hpp"
 
 using namespace atina::server::core::builtin::email;
 namespace fs = std::filesystem;
@@ -22,12 +25,14 @@ fs::path email_builder::build_verification_email(const std::string& __c_s_code, 
                                                       .append(".html");
     if (!fs::exists(template_path))
     {
+        LOG(WARNING) << "Verification code email template doesn't exist. [path=\"" << template_path << "\"]";
         return "";
     }
 
     std::ifstream rfile(template_path);
     if (!rfile.is_open())
     {
+        LOG(WARNING) << "Failed to read from verification code email template. [path=\"" << template_path << "\",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
         return "";
     }
     
@@ -57,9 +62,11 @@ fs::path email_builder::build_verification_email(const std::string& __c_s_code, 
         new_filename.append(".").append(std::to_string(count));
         email_path = email_path.parent_path() / new_filename;
     } // avoid same filename
+    LOG(INFO) << "Writing email to file. [path=\"" << email_path << "\"]";
     std::ofstream wfile(email_path);
     if (!wfile.is_open())
     {
+        LOG(WARNING) << "Failed to write email to file. [path=\"" << email_path << "\",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
         return "";
     }
     wfile << email;
@@ -74,12 +81,14 @@ fs::path email_builder::build_welcome_email(const std::string& __c_s_username, l
                                             .append(".html");
     if (!fs::exists(template_path))
     {
+        LOG(WARNING) << "Welcome email template doesn't exist. [path=\"" << template_path << "\"]";
         return "";
     }
 
     std::ifstream rfile(template_path);
     if (!rfile.is_open())
     {
+        LOG(WARNING) << "Failed to read from welcome email template. [path=\"" << template_path << "\",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
         return "";
     }
     
@@ -108,9 +117,11 @@ fs::path email_builder::build_welcome_email(const std::string& __c_s_username, l
         new_filename.append(".").append(std::to_string(count));
         email_path = email_path.parent_path() / new_filename;
     } // avoid same filename
+    LOG(INFO) << "Writing email to file. [path=\"" << email_path << "\"]";
     std::ofstream wfile(email_path);
     if (!wfile.is_open())
     {
+        LOG(WARNING) << "Failed to write email to file. [path=\"" << email_path << "\",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
         return "";
     }
     wfile << email;

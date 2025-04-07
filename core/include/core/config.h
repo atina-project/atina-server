@@ -18,6 +18,8 @@ namespace atina::server::core {
             std::string _s_admin_email;
             std::filesystem::path _fp_send_email_script_path;
 
+            std::string _dump_config_to_string() const;
+
     }; // class config
 
 } // namespace atina::server::core
