@@ -22,6 +22,7 @@ set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/enum.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/module_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/modules.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/task_scheduler.cpp
 )
 
 add_library(${PROJECT_NAME}
