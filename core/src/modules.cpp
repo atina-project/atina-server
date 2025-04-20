@@ -5,6 +5,7 @@
 #include"builtin/email/email_builder.h"
 #include"builtin/email/email_sender.h"
 #include"core/config.h"
+#include"core/task_scheduler.h"
 #include"Hypodermic/ContainerBuilder.h"
 
 #include"core/module_container.tpp"
@@ -13,6 +14,7 @@ using namespace atina::server::core;
 
 void modules::register_modules(Hypodermic::ContainerBuilder* __p__builder) const {
     __p__builder->registerType<config>();
+    __p__builder->registerType<task_scheduler>();
 
     __p__builder->registerType<builtin::database::base>();
     __p__builder->registerType<builtin::database::token>();
@@ -23,6 +25,7 @@ void modules::register_modules(Hypodermic::ContainerBuilder* __p__builder) const
 }
 
 INSTANCE_MODULE_CONTAINER_RESOLVE(config);
+INSTANCE_MODULE_CONTAINER_RESOLVE(task_scheduler);
 INSTANCE_MODULE_CONTAINER_RESOLVE(builtin::database::base);
 INSTANCE_MODULE_CONTAINER_RESOLVE(builtin::database::token);
 INSTANCE_MODULE_CONTAINER_RESOLVE(builtin::email::email_builder);

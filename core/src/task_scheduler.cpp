@@ -1,7 +1,6 @@
 #include"core/task_scheduler.h"
 
 #include"core/utils/time.h"
-#include"core/utils/uuid.h"
 #include"g3log/g3log.hpp"
 
 using namespace atina::server::core;
@@ -11,14 +10,11 @@ task_scheduler::~task_scheduler(){
     return;
 }
 
-std::string task_scheduler::add_task(const std::string& __c_s_taskname, const std::function<void()> __c_fu_task, unsigned int __ui_interval_min, bool __b_exec_now){
+int task_scheduler::add_task(const std::string& __c_s_taskname, const std::function<void()>& __c_fu_task, unsigned int __ui_interval_min, bool __b_exec_now){
     std::lock_guard<std::mutex> lock(this->_mtx);
 
-    std::string token = utils::uuid::generate();
-    while (this->_tasks.find(token) != this->_tasks.end())
-    {
-        token = utils::uuid::generate();
-    } // avoid token collisions (although it is really unlikely)
+    int token = this->_i_next_token;
+    this->_i_next_token++;
 
     _task this_task;
     this_task.s_taskname = __c_s_taskname;
@@ -35,10 +31,10 @@ std::string task_scheduler::add_task(const std::string& __c_s_taskname, const st
     return token;
 }
 
-void task_scheduler::delete_task(const std::string& __c_s_token){
+void task_scheduler::delete_task(int __i_token){
     std::lock_guard<std::mutex> lock(this->_mtx);
 
-    auto it = this->_tasks.find(__c_s_token);
+    auto it = this->_tasks.find(__i_token);
     if (it != this->_tasks.end())
     {
         this->_tasks.erase(it);
@@ -80,6 +76,7 @@ void task_scheduler::_bg_task(){
         this->_cv.wait_for(lock, std::chrono::seconds(10), [this]{
             return !this->_b_running;
         });
+        LOG(DEBUG) << "Checking need-to-execute background tasks...";
         uint64_t now = utils::time::now().to_ts();
         for (auto& it : this->_tasks)
         {

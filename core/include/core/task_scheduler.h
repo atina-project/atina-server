@@ -20,12 +20,12 @@ namespace atina::server::core {
              * Add a scheduled task into task scheduler, interval in minutes.
              * A task token will be returned.
              */
-            std::string add_task(const std::string& __c_s_taskname, const std::function<void()> __c_fu_task, unsigned int __ui_interval_min, bool __b_exec_now = false);
+            int add_task(const std::string& __c_s_taskname, const std::function<void()>& __c_fu_task, unsigned int __ui_interval_min, bool __b_exec_now = false);
             /**
              * Delete a scheduled task.
              * If you want to change task execute interval, delete it and then re-add it.
              */
-            void delete_task(const std::string& __c_s_token);
+            void delete_task(int __i_token);
 
             void start();
             void stop();
@@ -41,9 +41,9 @@ namespace atina::server::core {
         private:
             std::condition_variable _cv;
             std::mutex _mtx;
-            std::unordered_map<std::string, _task> _tasks;
+            std::unordered_map<int, _task> _tasks;
             std::thread _worker;
-
+            int _i_next_token;
             bool _b_running;
 
             void _bg_task();

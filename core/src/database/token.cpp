@@ -1,7 +1,6 @@
 #include"builtin/database/token.h"
 
 #include<cassert>
-#include<chrono>
 
 #include"builtin/database/tables/token_header.h"
 #include"builtin/database/tables/tokens.h"
@@ -13,8 +12,8 @@
 using namespace atina::server::core::builtin;
 namespace fs = std::filesystem;
 
-database::token::token()
-    : _fp_db_path(utils::folder::data() / "token.db")
+database::token::token(std::shared_ptr<task_scheduler> __p__scheduler)
+    : _fp_db_path(utils::folder::data() / "token.db"), _p__scheduler(__p__scheduler)
 {
     bool new_db = !fs::exists(this->_fp_db_path);
     this->_p__db = std::make_unique<WCDB::Database>(this->_fp_db_path.string());
@@ -31,8 +30,8 @@ database::token::token()
         bool ret = this->_p__db->createTable<tables::token_header>("header");
         tables::token_header header;
         header.i_version = ATINA_SERVER_DATABASE_TOKEN_VERSION;
-        header.ui64_token_valid_time_length = 3600000;
-        header.ui64_auto_cleanup_interval = 60000;
+        header.ui64_token_valid_time_length_ms = 3600000;
+        header.ui64_auto_cleanup_interval_min = 1;
         header.ui64_last_cleanup_time = utils::time::now().to_ts();
         ret &= this->_p__db->insertObject<tables::token_header>(header, "header");
 
@@ -46,9 +45,8 @@ database::token::token()
             );
         } // error occurs
 
-        this->_ui64_token_valid_time_length = 3600000;
-        this->_ui64_auto_cleanup_interval = 60000;
-        this->_ui64_last_cleanup_time = header.ui64_last_cleanup_time;
+        this->_ui64_token_valid_time_length_ms = 3600000;
+        this->_ui64_auto_cleanup_interval_min = 1;
     } // create new database
     else
     {
@@ -70,9 +68,8 @@ database::token::token()
             );
         }
         // possible version sp judge should be added here
-        this->_ui64_token_valid_time_length = header_data_optional->ui64_token_valid_time_length;
-        this->_ui64_auto_cleanup_interval = header_data_optional->ui64_auto_cleanup_interval;
-        this->_ui64_last_cleanup_time = header_data_optional->ui64_last_cleanup_time;
+        this->_ui64_token_valid_time_length_ms = header_data_optional->ui64_token_valid_time_length_ms;
+        this->_ui64_auto_cleanup_interval_min = header_data_optional->ui64_auto_cleanup_interval_min;
 
         ret = this->_p__db->tableExists("tokens").value();
         if (!ret)
@@ -90,13 +87,17 @@ database::token::token()
             );
         } // illegal tokens table
 
-        this->cleanup_database();
+        this->_i_bg_task_token =  this->_p__scheduler->add_task(
+            "tokens_cleanup",
+            [this](){ this->cleanup_database(); },
+            this->_ui64_auto_cleanup_interval_min,
+            true
+        );
     } // read existing database
     return;
 }
 
 database::token::~token(){
-    this->stop_bg_auto_cleanup();
     this->close_database();
     return;
 }
@@ -127,7 +128,7 @@ std::string database::token::add_token(int __i_uid, const std::string& __c_s_ip_
     new_token.i_uid = __i_uid;
     new_token.s_token = utils::uuid::generate();
     new_token.ui64_create_time = utils::time::now().to_ts();
-    new_token.ui64_expire_time = new_token.ui64_create_time + this->_ui64_token_valid_time_length;
+    new_token.ui64_expire_time = new_token.ui64_create_time + this->_ui64_token_valid_time_length_ms;
     new_token.s_ip_addr = __c_s_ip_addr;
     new_token.s_user_agent = __c_s_user_agent;
     bool ret = tokens.insertObject(new_token);
@@ -165,7 +166,7 @@ bool database::token::check_token_if_valid_refresh_expired_remove(int __i_uid, c
     } // wrong token
     {
         bool ret = tokens.updateRow(
-            utils::time::now().to_ts() + this->_ui64_token_valid_time_length,
+            utils::time::now().to_ts() + this->_ui64_token_valid_time_length_ms,
             WCDB_FIELD(tables::tokens::ui64_expire_time),
             WCDB_FIELD(tables::tokens::i_uid) == __i_uid
         );
@@ -219,42 +220,4 @@ bool database::token::has_uid(int __i_uid){
                                .limit(1)
     )->boolValue();
     return has_uid;
-}
-
-void database::token::start_bg_auto_cleanup(){
-    std::lock_guard<std::mutex> lock(this->_mtx_bg);
-
-    if (this->_b_bg_running)
-    {
-        return;
-    }
-    this->_b_bg_running = true;
-    this->_t_bg_worker = std::thread(&token::_bg_auto_cleanup_task, this);
-    return;
-}
-
-void database::token::stop_bg_auto_cleanup(){
-    {
-        std::lock_guard<std::mutex> lock(this->_mtx_bg);
-        if (!this->_b_bg_running)
-        {
-            return;
-        }
-        this->_b_bg_running = false;
-    }
-    this->_cv_bg.notify_one();
-    this->_t_bg_worker.join();
-    return;
-}
-
-void database::token::_bg_auto_cleanup_task(){
-    std::unique_lock<std::mutex> lock(this->_mtx_bg);
-    while (this->_b_bg_running)
-    {
-        this->_cv_bg.wait_for(lock, std::chrono::milliseconds(this->_ui64_auto_cleanup_interval), [this]{
-            return !this->_b_bg_running;
-        });
-        this->cleanup_database();
-    }
-    return;
 }
