@@ -14,6 +14,7 @@ set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/argon2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/hash/sha256.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/folder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/log.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/server_instance.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/uuid.cpp
