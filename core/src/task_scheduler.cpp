@@ -28,6 +28,7 @@ int task_scheduler::add_task(const std::string& __c_s_taskname, const std::funct
         __c_fu_task();
     }
 
+    LOG(INFO) << "Background task added. [name=\"" << __c_s_taskname << "\",token=" << token << ",interval=" << __ui_interval_min << ",execed=" << __b_exec_now << "]";
     return token;
 }
 
@@ -38,7 +39,9 @@ void task_scheduler::delete_task(int __i_token){
     if (it != this->_tasks.end())
     {
         this->_tasks.erase(it);
+        LOG(INFO) << "Background task deleted. [token=" << __i_token << "]";
     }
+    LOG(INFO) << "Background task not found, ignore delete. [token=\"" << __i_token << "]";
     return;
 }
 
@@ -51,6 +54,7 @@ void task_scheduler::start(){
     }
     this->_b_running = true;
     this->_worker = std::thread(&task_scheduler::_bg_task, this);
+    LOG(INFO) << "Task scheduler background worker started.";
     return;
 }
 
@@ -66,6 +70,7 @@ void task_scheduler::stop(){
 
     this->_cv.notify_one();
     this->_worker.join();
+    LOG(INFO) << "Task scheduler background worker stoped.";
     return;
 }
 
