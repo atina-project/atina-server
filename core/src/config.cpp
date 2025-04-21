@@ -35,19 +35,22 @@ config::config(){
         this->_fp_send_email_script_path.clear();
     } // using builtin gmail but default send email script doesn't exist
 #endif // BUILD_CONFIG_USE_BUILTIN_GMAIL
+    this->_ui_validation_code_valid_time_length_min = 10;
 
     config_path /= "server_config.json";
     if (!fs::exists(config_path))
     {
-        LOG(INFO) << "Creating new config file... [path=\"" << config_path << "\"]";
+        LOG(INFO) << "Creating new config file... [path=" << config_path << "]";
         Json::Value root;
         root["admin_email"] = this->_s_admin_email;
         root["send_email_script_path"] = this->_fp_send_email_script_path.string();
+        root["validation_code_style"] = this->_i_validation_code_style;
+        root["validation_code_valid_time_length_min"] = this->_ui_validation_code_valid_time_length_min;
 
         std::ofstream config_file(config_path);
         if (!config_file.is_open())
         {
-            LOG(WARNING) << "Failed to write to new config file. [path=\"" << config_path << "\",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
+            LOG(WARNING) << "Failed to write to new config file. [path=" << config_path << ",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
             throw exception::config_exception(
                 exception::config_errcode::CFG_CANNOT_OPEN,
                 "cannot open server_config.json to write"
@@ -60,11 +63,11 @@ config::config(){
     } // new config
     else
     {
-        LOG(INFO) << "Reading from config file... [path=\"" << config_path << "\"]";
+        LOG(INFO) << "Reading from config file... [path=" << config_path << "]";
         std::ifstream config_file(config_path);
         if (!config_file.is_open())
         {
-            LOG(WARNING) << "Failed to read from config file. [path=\"" << config_path << "\",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
+            LOG(WARNING) << "Failed to read from config file. [path=" << config_path << ",errno=" << errno << ",errmsg=\"" << std::strerror(errno) << "\"]";
             throw exception::config_exception(
                 exception::config_errcode::CFG_CANNOT_OPEN,
                 "cannot open server_config.json to read"
@@ -85,6 +88,8 @@ config::config(){
 
         this->_s_admin_email = root["admin_email"].asString();
         this->_fp_send_email_script_path = root["send_email_script_path"].asString();
+        this->_i_validation_code_style = root["validation_code_style"].asInt();
+        this->_ui_validation_code_valid_time_length_min = root["validation_code_valid_time_length_min"].asUInt();
     }
 
     LOG(INFO) << "Config parse done. [" << this->_dump_config_to_string() << "]";
@@ -99,9 +104,19 @@ fs::path config::hook_send_email_script_path() const noexcept {
     return this->_fp_send_email_script_path;
 }
 
+int config::validation_code_style() const noexcept {
+    return this->_i_validation_code_style;
+}
+
+unsigned int config::validation_code_valid_time_length_min() const noexcept {
+    return this->_ui_validation_code_valid_time_length_min;
+}
+
 std::string config::_dump_config_to_string() const {
     std::ostringstream oss;
     oss << "admin_email=\"" << this->_s_admin_email << "\","
-        << "send_email_script_path=\"" << this->_fp_send_email_script_path << "\"";
+        << "send_email_script_path=\"" << this->_fp_send_email_script_path << "\","
+        << "validation_code_style=" << this->_i_validation_code_style << ","
+        << "validation_code_valid_time_length_min=" << this->_ui_validation_code_valid_time_length_min;
     return oss.str();
 }

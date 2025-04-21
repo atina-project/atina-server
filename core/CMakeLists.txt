@@ -16,6 +16,7 @@ set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/folder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/log.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/server_instance.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/string.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/uuid.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/config.cpp
@@ -24,6 +25,7 @@ set(_CORE_SRC_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/module_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/modules.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/task_scheduler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/validation_code.cpp
 )
 
 add_library(${PROJECT_NAME}
