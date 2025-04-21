@@ -14,10 +14,10 @@ using namespace atina::server::core;
 
 void modules::register_modules(Hypodermic::ContainerBuilder* __p__builder) const {
     __p__builder->registerType<config>();
-    __p__builder->registerType<task_scheduler>();
+    __p__builder->registerType<task_scheduler>().singleInstance();
 
-    __p__builder->registerType<builtin::database::base>();
-    __p__builder->registerType<builtin::database::token>();
+    __p__builder->registerType<builtin::database::base>().singleInstance();
+    __p__builder->registerType<builtin::database::token>().singleInstance();
     __p__builder->registerType<builtin::email::email_builder>();
     __p__builder->registerType<builtin::email::email_sender>();
 
