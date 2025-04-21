@@ -8,6 +8,7 @@
 #include<unordered_map>
 
 #include"core/config.h"
+#include"core/task_scheduler.h"
 
 /**
  * Validation code manager is designed to be non-persistent.
@@ -27,7 +28,7 @@ namespace atina::server::core::builtin {
             } code;
 
         public:
-            validation_code(std::shared_ptr<config> __p__config);
+            validation_code(std::shared_ptr<config> __p__config, std::shared_ptr<task_scheduler> __p__scheduler);
             ~validation_code(){}
 
             /**
@@ -52,14 +53,18 @@ namespace atina::server::core::builtin {
             } _code;
 
         private:
-            std::mutex _mtx;
-            std::unordered_map<std::string, _code> _codes;
-
             const int _c_i_validation_code_min_size = 4;
             const int _c_i_validation_code_max_size = 8;
+            const unsigned int _c_ui_auto_cleanup_interval_min = 1;
 
+            std::mutex _mtx;
+            std::unordered_map<std::string, _code> _codes;
+            std::shared_ptr<task_scheduler> _p__scheduler;
+            int _i_bg_task_token;
             std::string _s_charpool;
             unsigned int _ui_valid_time_length_ms;
+
+            void _cleanup();
 
     }; // class validation_code
 
