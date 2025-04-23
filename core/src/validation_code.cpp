@@ -14,7 +14,7 @@ validation_code::validation_code(std::shared_ptr<config> __p__config, std::share
 {
     if (__p__config->validation_code_style() == 0)
     {
-        this->_s_charpool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        this->_s_charpool = "AB0CDE1FG2HIJ3KL4MNO5PQ6RST7UV8WXY9Z";
         LOG(INFO) << "Using upper letter + number charpool.";
     }
     else
@@ -31,11 +31,10 @@ validation_code::validation_code(std::shared_ptr<config> __p__config, std::share
     return;
 }
 
-bool validation_code::check_validation_code(const std::string& __c_s_token, const std::string& __c_s_code){
+bool validation_code::check_validation_code(const std::string& __c_s_token, std::string __s_code){
     std::lock_guard<std::mutex> lock(this->_mtx);
 
-    std::string code = __c_s_code;
-    utils::string::to_upper(code);
+    utils::string::to_upper(__s_code);
     // ignore cases 
 
     auto it = this->_codes.find(__c_s_token);
@@ -44,7 +43,7 @@ bool validation_code::check_validation_code(const std::string& __c_s_token, cons
         LOG(INFO) << "Failed to verify validation code, token doesn't exist. [token=\"" << __c_s_token << "\"]";
         return false;
     } // token doesn't exist
-    else if (it->second.s_code != code)
+    else if (it->second.s_code != __s_code)
     {
         LOG(INFO) << "Failed to verify validation code, unmatched code. [token=\"" << __c_s_token << "\"]";
         return false;

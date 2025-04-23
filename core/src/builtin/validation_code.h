@@ -37,7 +37,7 @@ namespace atina::server::core::builtin {
              *
              * ATTENTION: If validation code verified, this code will be deleted since it can only be used once.
              */
-            bool check_validation_code(const std::string& __c_s_token, const std::string& __c_s_code);
+            bool check_validation_code(const std::string& __c_s_token, std::string __c_s_code);
             /**
              * Request a new validation code. A struct includes token & code will be returned.
              *
