@@ -33,7 +33,7 @@ thread_pool::thread_pool(size_t __si_threads)
 {
     for (size_t i = 0 ; i < __si_threads ; i++)
     {
-        _workers.emplace_back(std::make_pair(
+        this->_workers.emplace_back(std::make_pair(
             [this, i]
             {
                 this -> _workers[i].second = true;
