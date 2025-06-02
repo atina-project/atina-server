@@ -5,6 +5,7 @@
 
 #include"core/build_config.h"
 #include"core/utils/folder.h"
+#include"core/utils/server_instance.h"
 #include"core/utils/time.h"
 #include"g3log/g3log.hpp"
 #include"g3log/logworker.hpp"
@@ -40,6 +41,8 @@ void log::init(){
     g3::only_change_at_initialization::addLogLevel(INFO, true);
     g3::only_change_at_initialization::addLogLevel(WARNING, true);
     g3::only_change_at_initialization::addLogLevel(FATAL, true);
+
+    g3::setFatalPreLoggingHook(&server_instance::_fatal);
 
     return;
 }
