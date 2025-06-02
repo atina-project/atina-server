@@ -19,6 +19,8 @@ namespace atina::server::core {
             static void init(const std::vector<basic_module*>& __c_v_modules);
             template<class T>
             static std::shared_ptr<T> resolve();
+            template<class T>
+            static std::shared_ptr<T> resolve_named(const std::string& __c_s_name);
 
         private:
             static std::shared_ptr<Hypodermic::Container> _p__container;
