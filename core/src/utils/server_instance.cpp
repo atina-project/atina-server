@@ -9,8 +9,8 @@
 using namespace atina::server::core::utils;
 
 const char* server_instance::LOCK_FILE_PATH = "/tmp/atina_server.lock";
-std::vector<std::function<void()>> server_instance::__atexit_funcs;
-std::vector<std::function<void()>> server_instance::__atfatal_funcs;
+std::vector<std::function<void()>> server_instance::_vfu_atexit_funcs;
+std::vector<std::function<void()>> server_instance::_vfu_atfatal_funcs;
 
 bool server_instance::ensure_single_instance(){
     LOG(INFO) << "Ensuring server single instance...";
@@ -33,7 +33,7 @@ bool server_instance::ensure_single_instance(){
 void server_instance::exit(){
     LOG(INFO) << "Exiting...";
 
-    for (auto it = __atexit_funcs.rbegin() ; it != __atexit_funcs.rend(); ++it)
+    for (auto it = _vfu_atexit_funcs.rbegin() ; it != _vfu_atexit_funcs.rend(); ++it)
     {
         (*it)();
     }
@@ -41,17 +41,17 @@ void server_instance::exit(){
     return;
 }
 
-void server_instance::register_atexit(const std::function<void()>& __c__func, bool __b_atfatal){
-    __atexit_funcs.push_back(__c__func);
+void server_instance::register_atexit(const std::function<void()>& __c_fu_func, bool __b_atfatal){
+    _vfu_atexit_funcs.push_back(__c_fu_func);
     if (__b_atfatal)
     {
-        __atfatal_funcs.push_back(__c__func);
+        _vfu_atfatal_funcs.push_back(__c_fu_func);
     }
     return;
 }
 
 void server_instance::_fatal(){
-    for (auto it = __atfatal_funcs.rbegin() ; it != __atfatal_funcs.rend() ; ++it)
+    for (auto it = _vfu_atfatal_funcs.rbegin() ; it != _vfu_atfatal_funcs.rend() ; ++it)
     {
         (*it)();
     }
