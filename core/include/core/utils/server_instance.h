@@ -10,10 +10,19 @@ namespace atina::server::core::utils {
 
         public:
             static bool ensure_single_instance();
-            static void exit();
-            static void register_atexit(const std::function<void()>& __c_fu_func, bool __b_atfatal = true);
 
-            static void _fatal();
+            /**
+             * Add a function which should be execed at exit.
+             * Functions follow LIFO rule.
+             * If the function shouldn't be run on crash, set `__b_atfatal` as false.
+             */
+            static void add_atexit_function(const std::function<void()>& __c_fu_func, bool __b_atfatal = true);
+            static void exec_atexit_functions();
+            /**
+             * This function should only used as g3log fatal pre logging hook (`g3::setFatalPreLoggingHook()`).
+             * DO NOT call this function manually!!!
+             */
+            static void _exec_atfatal_functions();
 
         private:
             static const char* LOCK_FILE_PATH;

@@ -30,7 +30,7 @@ bool server_instance::ensure_single_instance(){
     return true;
 }
 
-void server_instance::exit(){
+void server_instance::exec_atexit_functions(){
     LOG(INFO) << "Exiting...";
 
     for (auto it = _vfu_atexit_funcs.rbegin() ; it != _vfu_atexit_funcs.rend(); ++it)
@@ -41,7 +41,7 @@ void server_instance::exit(){
     return;
 }
 
-void server_instance::register_atexit(const std::function<void()>& __c_fu_func, bool __b_atfatal){
+void server_instance::add_atexit_function(const std::function<void()>& __c_fu_func, bool __b_atfatal){
     _vfu_atexit_funcs.push_back(__c_fu_func);
     if (__b_atfatal)
     {
@@ -50,7 +50,7 @@ void server_instance::register_atexit(const std::function<void()>& __c_fu_func, 
     return;
 }
 
-void server_instance::_fatal(){
+void server_instance::_exec_atfatal_functions(){
     for (auto it = _vfu_atfatal_funcs.rbegin() ; it != _vfu_atfatal_funcs.rend() ; ++it)
     {
         (*it)();

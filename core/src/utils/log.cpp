@@ -42,7 +42,7 @@ void log::init(){
     g3::only_change_at_initialization::addLogLevel(WARNING, true);
     g3::only_change_at_initialization::addLogLevel(FATAL, true);
 
-    g3::setFatalPreLoggingHook(&server_instance::_fatal);
+    g3::setFatalPreLoggingHook(&server_instance::_exec_atfatal_functions);
 
     return;
 }
